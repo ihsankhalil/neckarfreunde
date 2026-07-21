@@ -933,3 +933,34 @@ blockquote{
     white-space:normal;
   }
 }
+/* Korrektur: Kompetenzen auf hellen Karten */
+
+.section.dark .collab-card:not(.featured){
+  color:var(--ink);
+}
+
+.section.dark .collab-card:not(.featured) h3{
+  color:var(--ink);
+}
+
+.section.dark .collab-card:not(.featured) p{
+  color:var(--ink-2);
+}
+
+.section.dark .collab-card:not(.featured) .meta{
+  color:var(--ink-3);
+}
+
+.section.dark .collab-card.featured{
+  background:var(--ink);
+  color:var(--on-ink);
+}
+
+.section.dark .collab-card.featured h3{
+  color:#fff;
+}
+
+.section.dark .collab-card.featured p,
+.section.dark .collab-card.featured .meta{
+  color:var(--on-ink-2);
+}
