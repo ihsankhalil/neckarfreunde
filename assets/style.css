@@ -624,17 +624,312 @@ h2.big{font-size:var(--step-h1)}
   }
 }
 
+/* ============================================================
+   FINAL MOBILE HEADER + OVERFLOW FIX
+   ============================================================ */
 
-/* ===== FINAL: EINHEITLICHES HEADER-LOGO UND NAVIGATION ===== */
-.nav .logo img{
-  height:48px;
-  width:auto;
+/* Globale Breitenabsicherung */
+html,
+body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+main,
+header,
+section,
+footer,
+.nav,
+.wrap{
+  min-width:0;
+  max-width:100%;
+}
+
+.wrap{
+  width:100%;
+}
+
+img,
+svg,
+video,
+iframe{
+  max-width:100%;
+}
+
+/* Lange Wörter dürfen keine Raster mehr sprengen */
+h1,
+h2,
+h3,
+p,
+a,
+span,
+strong,
+blockquote{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+/* Desktop-Header */
+.navin{
+  height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.15rem;
+  min-width:0;
+}
+
+.nav .logo{
+  display:flex;
+  align-items:center;
+  flex:0 1 auto;
+  min-width:0;
   max-width:310px;
+}
+
+.nav .logo img{
+  display:block;
+  width:auto;
+  height:48px;
+  max-width:100%;
   object-fit:contain;
 }
-@media(max-width:900px){
-  .nav .logo img{height:42px;max-width:250px}
+
+.nav .links{
+  min-width:0;
 }
-@media(max-width:560px){
-  .nav .logo img{height:36px;max-width:205px}
+
+.nav .cta,
+.menu-toggle{
+  flex-shrink:0;
+}
+
+/* Raster dürfen innerhalb des Viewports schrumpfen */
+.hero-home,
+.hero-copy,
+.positioning-grid,
+.mandate-box,
+.case-intro-grid,
+.case-body-grid,
+.case-copy,
+.client-hero-grid,
+.trust-layout,
+.office-hero-grid,
+.office-story,
+.owner-grid,
+.team-intro,
+.core-team,
+.core-person,
+.perspective-hero,
+.feature-story,
+.article-layout,
+.proven-box,
+.contact-grid,
+.grid2,
+.grid3{
+  min-width:0;
+}
+
+.hero-home > *,
+.positioning-grid > *,
+.mandate-box > *,
+.case-intro-grid > *,
+.case-body-grid > *,
+.case-copy > *,
+.client-hero-grid > *,
+.trust-layout > *,
+.office-hero-grid > *,
+.office-story > *,
+.owner-grid > *,
+.team-intro > *,
+.core-team > *,
+.core-person > *,
+.perspective-hero > *,
+.feature-story > *,
+.article-layout > *,
+.proven-box > *,
+.contact-grid > *,
+.grid2 > *,
+.grid3 > *{
+  min-width:0;
+}
+
+/* Mobile Navigation */
+@media (max-width:900px){
+  .navin{
+    height:76px;
+    gap:.65rem;
+  }
+
+  .nav .logo{
+    flex:1 1 auto;
+    max-width:220px;
+  }
+
+  .nav .logo img{
+    height:38px;
+    max-width:100%;
+  }
+
+  /* Der große Desktop-CTA verschwindet mobil.
+     Sonst stehen Logo + CTA + Menü gleichzeitig im Header. */
+  .nav > .wrap > .cta,
+  .navin > .cta{
+    display:none;
+  }
+
+  .menu-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:72px;
+    min-height:44px;
+    padding:.55rem .75rem;
+    position:relative;
+    z-index:102;
+  }
+
+  .links{
+    display:flex;
+    position:fixed;
+    top:76px;
+    left:0;
+    right:0;
+    width:100%;
+    max-width:100vw;
+    max-height:calc(100dvh - 76px);
+    overflow-y:auto;
+    background:var(--paper);
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+    padding:1rem var(--pad) 2rem;
+    border-bottom:1px solid var(--rule);
+    transform:translateY(-125%);
+    visibility:hidden;
+    pointer-events:none;
+    transition:transform .28s ease, visibility 0s linear .28s;
+    box-shadow:0 20px 40px rgba(19,38,57,.08);
+    z-index:101;
+  }
+
+  .links.open{
+    transform:translateY(0);
+    visibility:visible;
+    pointer-events:auto;
+    transition:transform .28s ease;
+  }
+
+  .links a{
+    display:block;
+    width:100%;
+    padding:1rem 0;
+    border-bottom:1px solid var(--rule);
+    font-size:1.05rem;
+    white-space:normal;
+  }
+
+  .links a::after{
+    display:none;
+  }
+
+  /* Mobile Abstände und Schriften */
+  .hero.big h1{
+    font-size:clamp(2.35rem,11vw,4.6rem);
+    line-height:.98;
+  }
+
+  .strike{
+    white-space:normal;
+  }
+
+  .buttons .btn{
+    max-width:100%;
+    white-space:normal;
+  }
+
+  .awardbar .wrap,
+  .badges,
+  .chips,
+  .themes,
+  .category-row,
+  .award-summary,
+  .fawards{
+    max-width:100%;
+  }
+
+  .quotes,
+  .newsgrid,
+  .grid3{
+    grid-template-columns:minmax(0,1fr);
+  }
+}
+
+@media (max-width:560px){
+  :root{
+    --pad:1.1rem;
+  }
+
+  .navin{
+    height:72px;
+  }
+
+  .nav .logo{
+    max-width:190px;
+  }
+
+  .nav .logo img{
+    height:34px;
+  }
+
+  .links{
+    top:72px;
+    max-height:calc(100dvh - 72px);
+  }
+
+  .menu-toggle{
+    min-width:68px;
+    font-size:.74rem;
+  }
+
+  .hero{
+    padding-top:2rem;
+  }
+
+  .hero.big h1{
+    font-size:clamp(2.15rem,11.5vw,3.25rem);
+  }
+
+  .eyebrow{
+    max-width:100%;
+    letter-spacing:.1em;
+    line-height:1.5;
+  }
+
+  .btn{
+    width:100%;
+    justify-content:center;
+  }
+
+  .buttons{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .footer .flogo{
+    width:min(100%,300px);
+  }
+
+  .feature-story h2,
+  .article-hero h1,
+  .case-big-result,
+  .case-result-two-lines{
+    max-width:100%;
+    overflow-wrap:anywhere;
+  }
+
+  .case-result-two-lines span{
+    white-space:normal;
+  }
 }
