@@ -1,0 +1,7 @@
+## KI-gestützter digitaler Strategieberater „Der neckarfreund“
+
+Auf dieser Website wird ein KI-gestützter digitaler Strategieberater angeboten. Wenn Sie eine Frage in das Eingabefeld eingeben und absenden, wird der Inhalt Ihrer Anfrage an einen von uns eingesetzten technischen Dienstleister zur automatisierten Verarbeitung übermittelt. Die Verarbeitung dient ausschließlich dazu, Ihre Frage anhand öffentlich verfügbarer Inhalte von neckarfreunde.de und ihsan-khalil.de zu beantworten.
+
+Bitte geben Sie keine vertraulichen Informationen, Geschäftsgeheimnisse, Gesundheitsdaten oder sonstigen besonders schützenswerten personenbezogenen Daten in das Eingabefeld ein.
+
+[Hier müssen vor Veröffentlichung noch der konkrete KI-Anbieter, dessen Sitz, mögliche Drittlandübermittlungen, Rechtsgrundlage, Speicherdauer, Auftragsverarbeitung und Betroffenenrechte ergänzt werden.]
