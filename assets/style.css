@@ -999,3 +999,18 @@ blockquote{
     margin-bottom:2rem;
   }
 }
+/* ===== Artikelbild ===== */
+
+.article-cover{
+    margin:0 auto 3rem;
+    max-width:1100px;
+    overflow:hidden;
+    border-radius:6px;
+}
+
+.article-cover img{
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+}
