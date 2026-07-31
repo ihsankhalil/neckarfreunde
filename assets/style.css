@@ -964,3 +964,13 @@ blockquote{
 .section.dark .collab-card.featured .meta{
   color:var(--on-ink-2);
 }
+
+/* ===== ZENON CMS GENERATED ARTICLE ELEMENTS ===== */
+.article-body .article-intro{font-family:var(--font-d);font-size:clamp(1.2rem,2vw,1.45rem);font-weight:600;line-height:1.45;color:var(--ink);margin-bottom:1.8rem}
+.article-body h3{font-size:1.25rem;margin:2rem 0 .7rem}
+.article-body ul,.article-body ol{margin:1rem 0 1.4rem 1.35rem;color:var(--ink-2)}
+.article-body li{margin:.45rem 0}
+.article-body a:not(.btn){color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.article-body .info-box{border-left:3px solid var(--accent);background:var(--paper-2);padding:1.2rem 1.4rem;margin:1.7rem 0}
+.article-body figure{margin:2rem 0}
+.article-body figcaption{font-family:var(--font-m);font-size:.7rem;color:var(--ink-3);margin-top:.55rem}
