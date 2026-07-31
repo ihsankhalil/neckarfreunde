@@ -974,3 +974,28 @@ blockquote{
 .article-body .info-box{border-left:3px solid var(--accent);background:var(--paper-2);padding:1.2rem 1.4rem;margin:1.7rem 0}
 .article-body figure{margin:2rem 0}
 .article-body figcaption{font-family:var(--font-m);font-size:.7rem;color:var(--ink-3);margin-top:.55rem}
+/* ===== ARTIKELBILD DETAILSEITE ===== */
+
+.article-hero-image{
+  width:100%;
+  max-width:1240px;
+  margin:0 auto 3rem;
+  overflow:hidden;
+  background:var(--ink);
+  aspect-ratio:16 / 9;
+}
+
+.article-hero-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+}
+
+@media(max-width:760px){
+  .article-hero-image{
+    aspect-ratio:4 / 3;
+    margin-bottom:2rem;
+  }
+}
