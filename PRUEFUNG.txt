@@ -1,0 +1,16 @@
+Downloadprüfung zusätzlicher Assets:
+assets/images/awards/german-brand-award-2023.png: OK
+assets/images/awards/german-design-award-2024.png: OK
+assets/images/awards/german-design-award-2025.png: OK
+assets/images/awards/german-design-award-2026.png: OK
+assets/images/clients/kundenlogos-1.png: OK
+assets/images/clients/kundenlogos-2.png: OK
+assets/images/news/award-handwerk-bw.png: OK
+assets/images/news/perspektive-neue-website-neue-klarheit-www-neckarfreunde-de.webp: OK
+assets/images/news/staat-klarheit.png: OK
+assets/images/news/verlassen-klarheit.png: OK
+assets/images/team/ihsan-khalil.jpg: OK
+assets/logo-transparent-light.png: OK
+assets/logo-transparent.png: OK
+assets/script.js: OK
+assets/style.css: OK

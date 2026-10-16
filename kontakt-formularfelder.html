@@ -1,0 +1,49 @@
+<!--
+  Zwei zusätzliche Pflichtfelder für das bestehende Kontaktformular (kontakt.html).
+  In das vorhandene <form> einfügen. Die name-Attribute bei Bedarf an euren Formular-Versand anpassen.
+  Zweck: Anfragen nach Anlass und Quelle auswerten (Messung, Schritt 4 im Plan).
+-->
+<div class="form-field">
+  <label for="anlass">Worum geht es?</label>
+  <select id="anlass" name="anlass" required>
+    <option value="">Bitte wählen</option>
+    <option>Marke und Positionierung</option>
+    <option>Markt und Vertrieb</option>
+    <option>Unternehmen und Führung</option>
+    <option>Nachfolge</option>
+    <option>Sprinttag / Strategie-Workshop</option>
+    <option>Interim Management</option>
+    <option>Moderation</option>
+    <option>Sonstiges</option>
+  </select>
+</div>
+
+<div class="form-field">
+  <label for="quelle">Wie sind Sie auf neckarfreunde aufmerksam geworden?</label>
+  <select id="quelle" name="quelle" required>
+    <option value="">Bitte wählen</option>
+    <option>Google-Suche</option>
+    <option>Google-Anzeige</option>
+    <option>LinkedIn</option>
+    <option>Persönlicher Brief</option>
+    <option>Vortrag oder Veranstaltung</option>
+    <option>Empfehlung</option>
+    <option>Buch oder Podcast</option>
+    <option>Sonstiges</option>
+  </select>
+</div>
+
+<!--
+  Vorbelegung über die URL, z. B. kontakt.html?anlass=Sprinttag:
+  Dieses kleine Skript am Ende von kontakt.html einbinden.
+-->
+<script>
+(function () {
+  var p = new URLSearchParams(location.search).get('anlass');
+  var s = document.getElementById('anlass');
+  if (!p || !s) return;
+  for (var i = 0; i < s.options.length; i++) {
+    if (s.options[i].text.toLowerCase().indexOf(p.toLowerCase()) === 0) { s.selectedIndex = i; break; }
+  }
+})();
+</script>
