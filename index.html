@@ -11,7 +11,6 @@
 <meta property="og:description" content="Mission: Klarheit. Ihsan Khalil klärt strategische Aufgaben in Marke, Marketing, Unternehmensentwicklung, Innovation, Nachfolge und Transformation. Strategieberatung aus Stuttgart.">
 <meta property="og:url" content="https://www.neckarfreunde.de/">
 <meta name="theme-color" content="#132639">
-<!-- Bestehendes Favicon, selbst gehostete Schriften und Consent-/Analyse-Skripte hier wie bisher einbinden -->
 <link rel="stylesheet" href="assets/css/nf-2027.css?v=20261016-3">
 <style>
 /* Mission: Klarheit – Startseite, 16.10.2026 */
@@ -49,7 +48,7 @@
 @media(max-width:1000px) { .nf-solution-row { grid-template-columns:minmax(0,1fr) minmax(0,2fr); } .nf-solution-answer { grid-column:2; } .nf-solution-problem { align-self:end; } }
 @media(max-width:760px) { .nf-mission-layout { grid-template-columns:minmax(0,1fr); } .nf-mission-person { max-width:480px; } .nf-convenience { grid-template-columns:minmax(0,1fr); gap:.5rem; } }
 @media(max-width:600px) { .nf-solution-row { grid-template-columns:minmax(0,1fr); gap:.9rem; padding:1.8rem 0; } .nf-solution-answer { grid-column:auto; } .nf-solution-label h3 { overflow-wrap:break-word; } .nf-row-number { display:inline; margin-right:.6rem; } .nf-solution-label { display:flex; align-items:baseline; gap:.5rem; } .nf-solutions-intro { margin-bottom:2.5rem; } }
-</style></head>
+</style><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23132639'/%3E%3Ccircle%20cx='23'%20cy='23'%20r='3.4'%20fill='%231E38DC'/%3E%3C/svg%3E" type="image/svg+xml"><link rel="stylesheet" href="nf-system.css?v=20261016-1"></head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="site-header">
@@ -296,7 +295,7 @@
       <nav aria-label="Rechtliches">
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-<a href="agb.html">AGB</a>
+<button type="button" class="nf-consent-settings" data-nf-consent-open="">Datenschutz-Einstellungen</button><a href="agb.html">AGB</a>
         <!-- Link „Datenschutz-Einstellungen“ des bestehenden Consent-Tools hier einsetzen -->
       </nav>
     </div>
@@ -304,5 +303,5 @@
   </div>
 </footer>
 <script src="assets/js/nf-2027.js" defer></script>
-</body>
+<section id="nf-consent-banner" class="nf-consent" role="dialog" aria-labelledby="nf-consent-title" aria-describedby="nf-consent-description" hidden><h2 id="nf-consent-title" tabindex="-1">Datenschutz-Einstellungen</h2><p id="nf-consent-description">Technisch notwendige Funktionen stellen diese Website bereit. Mit Ihrer Zustimmung laden wir zusätzlich Leadinfo, um Unternehmensbesuche zu erkennen und die Nutzung unserer Website auszuwerten. Dabei werden Daten an Leadinfo übermittelt. Die Auswahl ist freiwillig und kann über „Datenschutz-Einstellungen“ im Footer geändert werden.</p><p><a href="datenschutz.html">Mehr zum Datenschutz</a></p><label><input type="checkbox" id="nf-consent-analytics"><span>Analyse mit Leadinfo erlauben</span></label><div class="nf-consent-actions"><button type="button" id="nf-consent-reject">Nur notwendige</button><button type="button" id="nf-consent-accept">Analyse erlauben</button><button type="button" id="nf-consent-save">Auswahl speichern</button></div></section><script src="nf-consent.js?v=20261016-1" defer></script></body>
 </html>
