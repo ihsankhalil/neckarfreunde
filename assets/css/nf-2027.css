@@ -299,3 +299,25 @@ blockquote.quote footer { font-family: var(--font-sans); font-size: .85rem; colo
 @media (max-width: 540px) {
   .awards { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Perspektiven im Designsystem 2027 */
+.perspective-hero { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1fr); gap:3rem; align-items:end; }
+.perspective-note { border-top:1px solid var(--line); padding-top:1.2rem; }
+.category-row { display:flex; flex-wrap:wrap; gap:.7rem 1.4rem; margin-top:2rem; color:var(--copper); }
+.feature-story { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:3rem; align-items:center; padding-bottom:3rem; border-bottom:1px solid var(--line); }
+.story-image img { display:block; width:100%; height:auto; }
+.story-meta,.article-meta { font-size:.85rem; color:var(--muted); }
+.story-copy h2 { font-size:clamp(1.8rem,3.4vw,3rem); }
+.story-link { display:inline-block; color:var(--copper); margin-top:1rem; }
+.perspective-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2.5rem; margin-top:3rem; }
+.perspective-card { min-width:0; }
+.card-image img { width:100%; aspect-ratio:16/10; object-fit:cover; display:block; margin-bottom:1.5rem; }
+.card-copy h3 { font-size:clamp(1.4rem,2.3vw,2rem); }
+.grid2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3rem; }
+.article-cover { margin:0; } .article-cover img { display:block; width:100%; max-height:650px; object-fit:contain; }
+.article-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:3rem; }
+.article-body { max-width:800px; min-width:0; } .article-body p { line-height:1.85; }
+.article-body h2 { font-size:clamp(1.6rem,3vw,2.4rem); margin-top:2.5rem; }
+.article-body blockquote { margin:2rem 0; padding-left:1.5rem; border-left:3px solid var(--copper); }
+.article-cta { border-top:1px solid var(--line); margin-top:3rem; padding-top:2rem; }
+@media(max-width:800px) { .perspective-hero,.feature-story,.grid2,.article-layout { grid-template-columns:minmax(0,1fr); gap:2rem; } .perspective-grid { grid-template-columns:minmax(0,1fr); } }
