@@ -12,7 +12,15 @@
 <meta property="og:url" content="https://www.neckarfreunde.de/buero.html">
 <meta name="theme-color" content="#132639">
 <link rel="stylesheet" href="assets/css/nf-2027.css?v=20261016-3">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23132639'/%3E%3Ccircle%20cx='23'%20cy='23'%20r='3.4'%20fill='%231E38DC'/%3E%3C/svg%3E" type="image/svg+xml"><link rel="stylesheet" href="nf-system.css?v=20261017-3"></head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23132639'/%3E%3Ccircle%20cx='23'%20cy='23'%20r='3.4'%20fill='%231E38DC'/%3E%3C/svg%3E" type="image/svg+xml"><link rel="stylesheet" href="nf-system.css?v=20261017-3">
+<style>
+/* Büro: ruhige, responsive Bildstrecke ohne Beschriftung */
+.nf-buero-gallery { padding: clamp(1.5rem, 4vw, 4rem) 0; }
+.nf-buero-gallery__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 2vw, 1.5rem); }
+.nf-buero-gallery__grid img { display: block; width: 100%; height: clamp(240px, 32vw, 450px); object-fit: cover; object-position: center; }
+@media (max-width: 700px) { .nf-buero-gallery__grid { grid-template-columns: 1fr; } .nf-buero-gallery__grid img { height: auto; aspect-ratio: 3 / 2; } }
+</style>
+</head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="site-header">
@@ -69,7 +77,15 @@
   </div>
 </section>
 
-<section class="section section--navy"><div class="wrap split"><div><p class="eyebrow">Systemisches Coaching</p><h2>Klarheit beginnt auch bei der eigenen Rolle.</h2><p>Unternehmerische Entscheidungen entstehen im Zusammenspiel von Menschen, Erwartungen und gewachsenen Strukturen. Als ausgebildeter Systemischer Coach (CAS) unterstütze ich Geschäftsführer und Führungskräfte dabei, diese Zusammenhänge zu erkennen, die eigene Rolle zu klären und neue Handlungsmöglichkeiten zu entwickeln.</p><p>Im Coaching stehen Ihre Fragen im Mittelpunkt: Wie führen Sie durch Veränderung? Wie lösen Sie festgefahrene Konflikte? Und wie treffen Sie Entscheidungen, die zu Ihnen und Ihrer Verantwortung passen?</p><p class="signature">Ihsan Khalil</p></div><ul class="checklist"><li>Führungsrolle und Verantwortung klären</li><li>Perspektiven wechseln und Handlungsspielräume erweitern</li><li>Konflikte und wiederkehrende Muster verstehen</li><li>Veränderung bewusst gestalten</li></ul></div></section><section class="section">
+<section class="section section--navy"><div class="wrap split"><div><p class="eyebrow">Systemisches Coaching</p><h2>Klarheit beginnt auch bei der eigenen Rolle.</h2><p>Unternehmerische Entscheidungen entstehen im Zusammenspiel von Menschen, Erwartungen und gewachsenen Strukturen. Als ausgebildeter Systemischer Coach (CAS) unterstütze ich Geschäftsführer und Führungskräfte dabei, diese Zusammenhänge zu erkennen, die eigene Rolle zu klären und neue Handlungsmöglichkeiten zu entwickeln.</p><p>Im Coaching stehen Ihre Fragen im Mittelpunkt: Wie führen Sie durch Veränderung? Wie lösen Sie festgefahrene Konflikte? Und wie treffen Sie Entscheidungen, die zu Ihnen und Ihrer Verantwortung passen?</p><p class="signature">Ihsan Khalil</p></div><ul class="checklist"><li>Führungsrolle und Verantwortung klären</li><li>Perspektiven wechseln und Handlungsspielräume erweitern</li><li>Konflikte und wiederkehrende Muster verstehen</li><li>Veränderung bewusst gestalten</li></ul></div></section>
+<section class="nf-buero-gallery" aria-label="Einblicke in unser Büro">
+  <div class="wrap nf-buero-gallery__grid">
+    <img src="assets/images/buero/buero-arbeitsplatz.jpg" alt="Heller Arbeitsbereich mit Schreibtisch und großen Fenstern" loading="lazy" width="1106" height="737">
+    <img src="assets/images/buero/buero-atmosphaere.jpg" alt="Besprechungsbereich mit Sofas und viel Tageslicht" loading="lazy" width="1106" height="737">
+  </div>
+</section>
+
+<section class="section">
   <div class="wrap">
     <div class="intro">
       <p class="eyebrow">Warum klein?</p>
