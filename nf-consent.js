@@ -27,13 +27,18 @@
     banner.classList.toggle('nf-consent-details', !!details);
     heading.textContent = details ? 'Datenschutz-Einstellungen' : 'Ihre Privatsphäre ist uns wichtig.';
     description.textContent = details ? originalDescription : 'Wir verwenden notwendige Technologien und Leadinfo, um unsere Website kontinuierlich zu verbessern.';
+    // Inline-Display setzt sich auch gegen bestehende CSS-Regeln durch.
     detailLabel.hidden = !details;
+    detailLabel.style.setProperty('display', details ? 'flex' : 'none', 'important');
     saveButton.hidden = !details;
+    saveButton.style.setProperty('display', details ? '' : 'none', details ? '' : 'important');
     changeButton.hidden = !!details;
+    changeButton.style.setProperty('display', details ? 'none' : '', details ? 'important' : '');
     acceptButton.textContent = 'Alle akzeptieren';
     rejectButton.textContent = 'Nur notwendige';
   }
   changeButton.addEventListener('click', function () { view(true); });
+  // Die erste Ebene bleibt ohne zusätzliche Options-Checkbox.
   view(false);
   function read() {
     try {

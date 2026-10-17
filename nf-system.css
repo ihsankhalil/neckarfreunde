@@ -110,3 +110,13 @@
 .nf-consent-settings { appearance:none; background:transparent; border:0; padding:0; font:inherit; color:inherit; text-decoration:underline; text-underline-offset:.2em; cursor:pointer; }
 .nf-consent :focus-visible,.nf-consent-settings:focus-visible { outline:3px solid #e08a5a; outline-offset:4px; }
 @media(max-width:480px){.nf-consent{inset:auto .6rem .6rem;}.nf-consent-actions{grid-template-columns:1fr;}}
+
+/* Zweistufiger Cookie-Banner: gleiche Zugänglichkeit von Zustimmung und Ablehnung. */
+.nf-consent [hidden] { display:none !important; }
+.nf-consent-actions { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.nf-consent-actions button:last-child { grid-column:auto; }
+#nf-consent-change { grid-column:1/-1; background:transparent; color:#f3eee7; }
+.nf-consent:not(.nf-consent-details) #nf-consent-reject { background:transparent; color:#f3eee7; }
+.nf-consent:not(.nf-consent-details) #nf-consent-accept { background:#f3eee7; color:#132639; }
+.nf-consent-details #nf-consent-change { display:none; }
+@media(max-width:480px){.nf-consent-actions{grid-template-columns:1fr;}#nf-consent-change{grid-column:auto;}}
