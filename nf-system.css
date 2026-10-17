@@ -120,3 +120,9 @@
 .nf-consent:not(.nf-consent-details) #nf-consent-accept { background:#f3eee7; color:#132639; }
 .nf-consent-details #nf-consent-change { display:none; }
 @media(max-width:480px){.nf-consent-actions{grid-template-columns:1fr;}#nf-consent-change{grid-column:auto;}}
+
+/* Einheitliche Desktop-Navigation auf allen Seiten */
+@media (min-width: 1001px) {
+  .site-header .site-nav { gap: clamp(.4rem, .8vw, .8rem); }
+  .site-header .site-nav > a { white-space: nowrap; flex-shrink: 0; }
+}
