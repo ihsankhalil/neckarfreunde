@@ -12,7 +12,14 @@
 <meta property="og:url" content="https://www.neckarfreunde.de/kunden.html">
 <meta name="theme-color" content="#132639">
 <link rel="stylesheet" href="assets/css/nf-2027.css?v=20261016-3">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23132639'/%3E%3Ccircle%20cx='23'%20cy='23'%20r='3.4'%20fill='%231E38DC'/%3E%3C/svg%3E" type="image/svg+xml"><link rel="stylesheet" href="nf-system.css?v=20261017-3"></head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%23132639'/%3E%3Ccircle%20cx='23'%20cy='23'%20r='3.4'%20fill='%231E38DC'/%3E%3C/svg%3E" type="image/svg+xml"><link rel="stylesheet" href="nf-system.css?v=20261017-3"><style>
+/* Typografische Referenzwand */
+.nf-reference-wall{list-style:none;margin:2.3rem 0 1.5rem;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:2.5rem}
+.nf-reference-wall li{margin:0;padding:1.05rem 0;border-bottom:1px solid rgba(19,38,57,.18);color:#132639;font-size:clamp(.98rem,1.1vw,1.14rem);line-height:1.4;font-weight:500;overflow-wrap:break-word}
+.nf-reference-note{margin-top:1.2rem}
+@media(max-width:900px){.nf-reference-wall{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.5rem}}
+@media(max-width:560px){.nf-reference-wall{grid-template-columns:1fr;margin-top:1.4rem}.nf-reference-wall li{padding:.85rem 0}}
+</style></head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="site-header">
@@ -71,18 +78,52 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section nf-reference-section" id="referenzen">
   <div class="wrap">
     <div class="intro">
-      <p class="eyebrow">Ausgewählte Referenzen</p>
-      <h2>Ein Auszug aus der Zusammenarbeit seit 1996.</h2>
-      <p>Einzelne Mandate werden aus Gründen der Vertraulichkeit nicht öffentlich erläutert.</p>
+      <p class="eyebrow">Unternehmen, Institutionen und Organisationen</p>
+      <h2>Drei Jahrzehnte. Viele Herausforderungen. Unterschiedliche Branchen.</h2>
+      <p>Ein Auszug aus Unternehmen, Institutionen und Organisationen, für die wir im Laufe unserer Geschichte tätig waren. Darunter langjährige, abgeschlossene und aktuelle Mandate.</p>
     </div>
-    <div class="logos">
-      <img src="assets/images/clients/kundenlogos-1.png" alt="Ausgewählte Kundenlogos von neckarfreunde, Teil 1" loading="lazy">
-      <img src="assets/images/clients/kundenlogos-2.png" alt="Ausgewählte Kundenlogos von neckarfreunde, Teil 2" loading="lazy">
-    </div>
-    <p class="small">Auszug aus früheren und aktuellen Kundenbeziehungen. Abgebildete Marken bleiben Eigentum der jeweiligen Rechteinhaber.</p>
+    <ul class="nf-reference-wall" aria-label="Ausgewählte Referenzen">
+        <li>Alfred Kärcher</li>
+        <li>Allianz Versicherung</li>
+        <li>Binder Reisen</li>
+        <li>Bosig</li>
+        <li>Caritas</li>
+        <li>CoreTec</li>
+        <li>Dobler</li>
+        <li>Dr. Falk</li>
+        <li>Elektror airsystems</li>
+        <li>Globetrotter Select</li>
+        <li>Handwerk Baden-Württemberg e. V.</li>
+        <li>HMS</li>
+        <li>KACO</li>
+        <li>Kelch</li>
+        <li>KUKA</li>
+        <li>Königsegger WalderBräu</li>
+        <li>Lacom</li>
+        <li>Land Baden-Württemberg</li>
+        <li>Landeshauptstadt Stuttgart</li>
+        <li>Lorinser</li>
+        <li>Maurer</li>
+        <li>MC Bauchemie</li>
+        <li>Medien- und Filmgesellschaft Baden-Württemberg</li>
+        <li>Messe Frankfurt</li>
+        <li>Metallux</li>
+        <li>Ministerium für Kultus, Jugend und Sport Baden-Württemberg</li>
+        <li>Ministerium für Soziales, Gesundheit und Integration Baden-Württemberg</li>
+        <li>Ministerium für Umwelt, Klima und Energiewirtschaft Baden-Württemberg</li>
+        <li>mu&amp;te Productions</li>
+        <li>NHT Negele</li>
+        <li>SchwabenPersonal</li>
+        <li>Schwarzbräu</li>
+        <li>Starmix</li>
+        <li>STOLL</li>
+        <li>Thümmel Schütze Rechtsanwälte</li>
+        <li>Weigel Messgeräte</li>
+    </ul>
+    <p class="small nf-reference-note">Auswahl aus früheren und aktuellen Kundenbeziehungen. Einzelne Mandate werden aus Gründen der Vertraulichkeit nicht näher erläutert.</p>
   </div>
 </section>
 
@@ -156,6 +197,7 @@
         <ul>
           <li><a href="buero.html">Büro</a></li>
           <li><a href="zusammenarbeit.html">Zusammenarbeit</a></li>
+          <li><a href="technologie-ki.html">Tech &amp; KI</a></li>
           <li><a href="sprinttag.html">Sprinttag</a></li>
           <li><a href="arbeiten.html">Arbeiten</a></li>
           <li><a href="kunden.html">Kunden</a></li>
