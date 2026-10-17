@@ -8,6 +8,33 @@
   var banner = document.getElementById('nf-consent-banner');
   var checkbox = document.getElementById('nf-consent-analytics');
   if (!banner || !checkbox) return;
+  // Bestehendes HTML unverändert lassen; zwei Ansichten im Banner erzeugen.
+  var heading = document.getElementById('nf-consent-title');
+  var description = document.getElementById('nf-consent-description');
+  var privacyLink = banner.querySelector('p a[href*="datenschutz"]');
+  var detailLabel = checkbox.closest('label');
+  var saveButton = document.getElementById('nf-consent-save');
+  var acceptButton = document.getElementById('nf-consent-accept');
+  var rejectButton = document.getElementById('nf-consent-reject');
+  var actions = banner.querySelector('.nf-consent-actions');
+  var changeButton = document.createElement('button');
+  changeButton.type = 'button';
+  changeButton.id = 'nf-consent-change';
+  changeButton.textContent = 'Einstellungen ändern';
+  actions.insertBefore(changeButton, saveButton);
+  var originalDescription = description.textContent;
+  function view(details) {
+    banner.classList.toggle('nf-consent-details', !!details);
+    heading.textContent = details ? 'Datenschutz-Einstellungen' : 'Ihre Privatsphäre ist uns wichtig.';
+    description.textContent = details ? originalDescription : 'Wir verwenden notwendige Technologien und Leadinfo, um unsere Website kontinuierlich zu verbessern.';
+    detailLabel.hidden = !details;
+    saveButton.hidden = !details;
+    changeButton.hidden = !!details;
+    acceptButton.textContent = 'Alle akzeptieren';
+    rejectButton.textContent = 'Nur notwendige';
+  }
+  changeButton.addEventListener('click', function () { view(true); });
+  view(false);
   function read() {
     try {
       var c = JSON.parse(localStorage.getItem(KEY));
@@ -42,6 +69,7 @@
   function show(focus) {
     var c = read();
     checkbox.checked = !!(c && c.analytics);
+    view(!!focus);
     banner.hidden = false;
     if (focus) {
       returnFocus = document.activeElement;
