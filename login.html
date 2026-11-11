@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Anmeldung · Controlling-Board</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0E1F33;font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif;color:#0E1F33}
+.box{background:#F7F4EF;border-radius:12px;padding:34px 32px;width:min(380px,92vw);border-top:4px solid #8C4A2B}
+.k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8C4A2B;margin-bottom:6px}
+h1{font-family:Spectral,Georgia,serif;font-weight:600;font-size:24px;margin:0 0 18px}
+label{display:block;font-size:13px;color:#3C4A5C;margin-bottom:6px}
+input[type=password]{width:100%;padding:10px 12px;border:1px solid #D8D2C7;border-radius:8px;font:inherit;background:#fff}
+input[type=password]:focus{outline:2px solid #F3E7E0;border-color:#8C4A2B}
+.r{display:flex;align-items:center;gap:8px;font-size:13px;color:#3C4A5C;margin:12px 0 18px}
+button{width:100%;background:#0E1F33;color:#fff;border:0;border-radius:8px;padding:11px;font:inherit;font-weight:500;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.err{color:#A33A2B;font-size:13px;min-height:20px;margin-top:10px}
+.f{font-size:12px;color:#7A8594;margin-top:18px}
+</style>
+</head>
+<body>
+<form class="box" id="f" autocomplete="off">
+  <div class="k">mu&amp;te Productions · Controlling</div>
+  <h1>Anmeldung</h1>
+  <label for="pw">Passwort</label>
+  <input type="password" id="pw" autofocus required>
+  <div class="r"><input type="checkbox" id="keep"><label for="keep" style="margin:0">In diesem Tab angemeldet bleiben</label></div>
+  <button id="b" type="submit">Öffnen</button>
+  <div class="err" id="e"></div>
+  <div class="f">Inhalte sind verschlüsselt. Ohne Passwort nicht lesbar.</div>
+</form>
+<script>
+const P={salt:"__SALT__",iv:"__IV__",iter:__ITER__,data:"__DATA__"};
+const d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function decryptPage(pw){
+  const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+  const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:d(P.salt),iterations:P.iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:d(P.iv)},key,d(P.data));
+  return new TextDecoder().decode(pt);
+}
+async function go(pw,keep){
+  const html=await decryptPage(pw);
+  if(keep){try{sessionStorage.setItem("mute_ctrl_pw",pw)}catch(e){}}
+  document.open();document.write(html);document.close();
+}
+document.getElementById("f").addEventListener("submit",async ev=>{
+  ev.preventDefault();
+  const b=document.getElementById("b"),e=document.getElementById("e");
+  b.disabled=true;b.textContent="Prüfe …";e.textContent="";
+  try{await go(document.getElementById("pw").value,document.getElementById("keep").checked);}
+  catch(x){e.textContent="Passwort falsch.";b.disabled=false;b.textContent="Öffnen";}
+});
+(async()=>{let s=null;try{s=sessionStorage.getItem("mute_ctrl_pw")}catch(e){}
+  if(s){try{await go(s,false)}catch(e){try{sessionStorage.removeItem("mute_ctrl_pw")}catch(_){}}}})();
+</script>
+</body>
+</html>

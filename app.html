@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Controlling-Board mu&amp;te · Joana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F4EF; --paper:#FFFFFF; --ink:#0E1F33; --ink2:#3C4A5C; --mute:#7A8594;
+  --line:#E3DED5; --cu:#8C4A2B; --cu-soft:#F3E7E0; --ok:#2F6B4F; --ok-soft:#E3F0E8;
+  --bad:#A33A2B; --bad-soft:#F7E2DE; --warn:#9A6A12; --warn-soft:#F8EDD6;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Spectral,Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
+h1{font-size:28px} h2{font-size:24px;margin-bottom:6px} h3{font-size:18px;margin-bottom:8px}
+p{margin:0 0 10px}
+a{color:var(--cu)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header{background:var(--ink);color:#fff}
+header .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:26px;padding-bottom:18px;flex-wrap:wrap}
+header .kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#C9A48F;margin-bottom:4px}
+header .meta{font-size:13px;color:#B8C2CF;text-align:right}
+header button.logout{margin-top:6px;background:transparent;border:1px solid #4A5A70;color:#DDE3EA;border-radius:6px;padding:4px 10px;font:inherit;font-size:12px;cursor:pointer}
+nav{background:var(--ink);border-top:1px solid #23354C;position:sticky;top:0;z-index:5}
+nav .wrap{display:flex;gap:2px;overflow-x:auto}
+nav a{color:#C3CCD7;text-decoration:none;padding:12px 14px;font-size:14px;white-space:nowrap;border-bottom:3px solid transparent}
+nav a:hover{color:#fff}
+nav a.on{color:#fff;border-bottom-color:var(--cu)}
+main{padding:28px 0 60px}
+section.view{display:none} section.view.on{display:block}
+.lead{color:var(--ink2);max-width:760px;margin-bottom:22px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.card.accent{border-top:3px solid var(--cu)}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.big{font-family:Spectral,serif;font-size:34px;line-height:1.1}
+.small{font-size:13px;color:var(--mute)}
+.step{display:flex;gap:12px}
+.step .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600}
+ul.clean{list-style:none;padding:0;margin:0}
+ul.clean li{padding:7px 0;border-bottom:1px solid var(--line)}
+ul.clean li:last-child{border-bottom:0}
+.pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;background:var(--cu-soft);color:var(--cu);margin:2px 4px 2px 0}
+.sec{margin-top:30px}
+.sec > h3{margin-bottom:12px}
+/* journey */
+.phases{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px}
+.phases button{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 8px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink);text-align:left;min-height:64px}
+.phases button b{display:block;font-family:Spectral,serif;font-size:20px;color:var(--cu)}
+.phases button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.phases button.on b{color:#E3B79F}
+@media(max-width:800px){.phases{grid-template-columns:repeat(4,1fr)}}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 16px}
+.kv dt{color:var(--mute);font-size:13px}
+.kv dd{margin:0}
+.q{background:var(--cu-soft);border-left:3px solid var(--cu);padding:10px 14px;border-radius:0 8px 8px 0;font-style:italic}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:500}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+/* forms */
+label.f{display:block;font-size:13px;color:var(--ink2);margin-bottom:10px}
+input[type=number],input[type=text],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:7px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:2px solid var(--cu-soft);border-color:var(--cu)}
+td input{padding:6px 8px}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:7px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.cu{background:var(--cu)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.result{border-radius:8px;padding:14px 16px;margin-top:12px}
+.result.ok{background:var(--ok-soft);color:var(--ok)}
+.result.bad{background:var(--bad-soft);color:var(--bad)}
+.result.warn{background:var(--warn-soft);color:var(--warn)}
+.result .big{font-size:28px}
+.tools-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tools-nav button{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.tools-nav button.on{background:var(--cu);color:#fff;border-color:var(--cu)}
+.tool{display:none}.tool.on{display:block}
+/* checklist */
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--cu);width:16px;height:16px}
+.check.done span{color:var(--mute);text-decoration:line-through}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--cu);width:0;transition:width .3s}
+.neg{color:var(--bad);font-weight:600}
+footer{border-top:1px solid var(--line);padding:18px 0 40px;font-size:12px;color:var(--mute)}
+.note{font-size:13px;color:var(--ink2);background:#FBF9F5;border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:12px}
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:800px){.cycle{grid-template-columns:repeat(2,1fr)}}
+.cycle .card{position:relative}
+.cycle .card .n{font-family:Spectral,serif;font-size:30px;color:var(--cu);line-height:1}
+.folder{font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.8;background:#FBF9F5;border:1px solid var(--line);border-radius:8px;padding:12px 14px;white-space:pre}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div>
+      <div class="kicker">mu&amp;te Productions · Controlling</div>
+      <h1>Arbeitsboard Joana Riedesel</h1>
+    </div>
+    <div class="meta">
+      <div id="today"></div>
+      <div>Begleitung: Ihsan Khalil, neckarfreunde</div>
+      <button class="logout" onclick="logout()">Abmelden</button>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap" id="nav">
+  <a href="#start">Übersicht</a>
+  <a href="#journey">Customer Journey</a>
+  <a href="#tools">Werkzeuge</a>
+  <a href="#kpi">Kennzahlen</a>
+  <a href="#close">Monatsabschluss</a>
+  <a href="#path">Lernpfad</a>
+  <a href="#docs">Dokumente &amp; Systeme</a>
+</div></nav>
+
+<main><div class="wrap">
+
+<!-- ================= ÜBERSICHT ================= -->
+<section class="view" id="v-start">
+  <h2>Übersicht</h2>
+  <p class="lead">Controlling macht aus den Zahlen der Buchhaltung Entscheidungen für die nächsten Wochen. Dieses Board sammelt Werkzeuge, Abläufe und Ablage an einem Ort.</p>
+
+  <div class="grid g3">
+    <div class="card accent">
+      <div class="label">Monatsabschluss</div>
+      <div class="big" id="wd10"></div>
+      <div class="small" id="wd10sub"></div>
+    </div>
+    <div class="card accent">
+      <div class="label" id="closeLbl">Checkliste Monatsabschluss</div>
+      <div class="big" id="closePct">0 %</div>
+      <div class="bar" style="margin-top:8px"><i id="closeBar"></i></div>
+      <div class="small" style="margin-top:6px"><a href="#close">zur Checkliste</a></div>
+    </div>
+    <div class="card accent">
+      <div class="label">Grundplateau</div>
+      <div class="big" id="pathPct">0 von 6</div>
+      <div class="small">Kriterien erfüllt · Ziel Ende März 2027 · <a href="#path">Lernpfad</a></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>Der Regelkreis</h3>
+    <div class="cycle">
+      <div class="card"><div class="n">1</div><h3>Planen</h3><p class="small">Was wollen wir erreichen? Umsatz, Marge, Kosten, Liquidität je Monat.</p></div>
+      <div class="card"><div class="n">2</div><h3>Messen</h3><p class="small">Was ist passiert? Daten aus Rentman, Lexware, Crewmeister.</p></div>
+      <div class="card"><div class="n">3</div><h3>Analysieren</h3><p class="small">Wo weichen wir ab und warum? Projekt, Kunde, Kostenart.</p></div>
+      <div class="card"><div class="n">4</div><h3>Steuern</h3><p class="small">Was ändern wir? Preis, Kalkulation, Zumietung, Personal, Zahlungsziele.</p></div>
+    </div>
+  </div>
+
+  <div class="sec grid g2">
+    <div class="card">
+      <h3>Drei Prüffragen für jede Zahl</h3>
+      <ul class="clean">
+        <li><b>1. Stimmt sie?</b> Quelle, Vollständigkeit, richtiger Monat</li>
+        <li><b>2. Warum ist sie so?</b> Vergleich mit Plan und Vorjahr</li>
+        <li><b>3. Was folgt daraus?</b> Vorschlag mit Betrag und Termin</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rhythmus</h3>
+      <ul class="clean">
+        <li><b>Täglich</b> Belege erfassen, Bank in Lexware abgleichen</li>
+        <li><b>Montag</b> Offene Posten, Liquidität 13 Wochen, 3 Zahlen für den Jour fixe</li>
+        <li><b>Bis 10. Werktag</b> Monatsabschluss und Controlling-Paket an Hendric</li>
+        <li><b>Quartal</b> Forecast, Preise, Kundenanalyse</li>
+        <li><b>Okt bis Dez</b> Budget für das Folgejahr</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec grid g2">
+    <div class="card">
+      <h3>Grundregel: eine Projektnummer</h3>
+      <p>Die Nummer entsteht bei der Anfrage in Rentman. Sie steht auf Angebot, Auftrag, Crew-Planung, Zumietung, Zeiterfassung, Rechnung und als Kostenträger in Lexware.</p>
+      <p class="small">Ohne Nummer lässt sich kein Projekt nachrechnen.</p>
+    </div>
+    <div class="card">
+      <h3>Lexware und Excel</h3>
+      <p><span class="pill">Lexware</span> führt alle Daten: Belege, Buchungen, Bank, offene Posten.</p>
+      <p><span class="pill">Excel</span> wertet aus: Vorschau, Nachkalkulation, Szenarien. Immer aus einem aktuellen Export, Datum im Dateinamen.</p>
+      <p class="small">Keine Zahl wird zweimal von Hand eingetippt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JOURNEY ================= -->
+<section class="view" id="v-journey">
+  <h2>Controlling entlang der Customer Journey</h2>
+  <p class="lead">Jedes Projekt läuft durch sieben Phasen. Wähle eine Phase: Was tut Joana dort, mit welchem System, welche Kennzahl, welche Prüffrage.</p>
+  <div class="phases" id="phases"></div>
+  <div class="grid g2">
+    <div class="card accent" id="phaseCard"></div>
+    <div class="card">
+      <h3>Übergabe in dieser Phase</h3>
+      <div id="phaseHand"></div>
+      <div class="sec" style="margin-top:18px">
+        <div class="label">Pain Point laut Journey</div>
+        <div id="phasePain"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WERKZEUGE ================= -->
+<section class="view" id="v-tools">
+  <h2>Werkzeuge</h2>
+  <p class="lead">Rechner für den Alltag. Alles läuft nur in deinem Browser. Eingaben werden lokal auf diesem Gerät gespeichert und nirgends hochgeladen.</p>
+  <div class="tools-nav" id="toolsNav">
+    <button data-t="order" class="on">Lohnt sich der Auftrag?</button>
+    <button data-t="maw">Mindestauftragswert</button>
+    <button data-t="rate">Stundensatz</button>
+    <button data-t="lead">Lead-Bewertung</button>
+    <button data-t="liq">Liquidität 13 Wochen</button>
+  </div>
+
+  <!-- Auftragsrechner -->
+  <div class="tool on" id="t-order">
+    <div class="grid g2">
+      <div class="card">
+        <h3>Interne Zeit je Auftrag</h3>
+        <div class="row" style="margin-bottom:10px">
+          <button class="btn ghost" onclick="orderPreset('cd')">Beispiel: CD-Player klassisch</button>
+          <button class="btn ghost" onclick="orderPreset('shop')">Beispiel: über Webshop</button>
+          <button class="btn ghost" onclick="orderPreset('empty')">Leeren</button>
+        </div>
+        <table>
+          <thead><tr><th>Schritt</th><th>Rolle</th><th class="num">Min.</th><th></th></tr></thead>
+          <tbody id="orderRows"></tbody>
+        </table>
+        <button class="btn ghost" style="margin-top:10px" onclick="addOrderRow()">+ Schritt</button>
+      </div>
+      <div class="card">
+        <h3>Stundensätze (€ je Stunde)</h3>
+        <div class="grid g4" id="rateInputs" style="grid-template-columns:repeat(2,1fr)"></div>
+        <p class="small">Annahmen. Mit dem Rechner „Stundensatz“ aus echten Werten ableiten.</p>
+        <h3 style="margin-top:14px">Auftrag</h3>
+        <div class="grid g2">
+          <label class="f">Umsatz netto (€)<input type="number" id="oRev" step="0.01"></label>
+          <label class="f">Variable Kosten (€)<input type="number" id="oVar" step="0.01"><span class="small">Zumietung, Freelancer, Transport, Verschleiß</span></label>
+        </div>
+        <div id="orderOut"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAW -->
+  <div class="tool" id="t-maw">
+    <div class="grid g2">
+      <div class="card">
+        <h3>Eingaben</h3>
+        <label class="f">Prozesskosten je Auftrag (€)<input type="number" id="mProc" step="0.01"><span class="small"><a href="#" onclick="takeProc();return false">aus „Lohnt sich der Auftrag?“ übernehmen</a></span></label>
+        <label class="f">Variable Kosten je Auftrag (€)<input type="number" id="mVar" step="0.01"></label>
+        <label class="f">Fixkosten im Monat (€)<input type="number" id="mFix" step="1"></label>
+        <label class="f">Aufträge im Monat (Anzahl)<input type="number" id="mCnt" step="1"></label>
+        <label class="f">Gewinnaufschlag (%)<input type="number" id="mProfit" step="1"></label>
+      </div>
+      <div class="card accent">
+        <h3>Ergebnis</h3>
+        <div id="mawOut"></div>
+        <div class="note">Formel: (Prozesskosten + variable Kosten + Fixkostenanteil) × (1 + Gewinnaufschlag). Fixkostenanteil = Fixkosten im Monat ÷ Aufträge im Monat.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stundensatz -->
+  <div class="tool" id="t-rate">
+    <div class="grid g2">
+      <div class="card">
+        <h3>Inhaber (kalkulatorischer Unternehmerlohn)</h3>
+        <p class="small">In der Einzelfirma steht Hendrics Lohn nicht in der BWA. Seine Stunde kostet trotzdem.</p>
+        <label class="f">Benötigter Unternehmerlohn im Jahr (€)<input type="number" id="rOwn" step="1000"></label>
+        <label class="f">Stunden im Jahr an Kundenaufträgen<input type="number" id="rOwnH" step="10"></label>
+        <div id="rOwnOut"></div>
+      </div>
+      <div class="card">
+        <h3>Mitarbeitende</h3>
+        <label class="f">Bruttolohn im Jahr (€)<input type="number" id="rEmp" step="1000"></label>
+        <label class="f">Lohnnebenkosten Arbeitgeber (%)<input type="number" id="rEmpLnk" step="1"></label>
+        <label class="f">Gemeinkostenzuschlag (%)<span class="small"> Arbeitsplatz, Software, Fahrzeug, Verwaltung</span><input type="number" id="rEmpGk" step="1"></label>
+        <label class="f">Produktive Stunden im Jahr<input type="number" id="rEmpH" step="10"></label>
+        <div id="rEmpOut"></div>
+      </div>
+    </div>
+    <div class="note">Produktive Stunden sind deutlich weniger als bezahlte Stunden: Urlaub, Krankheit, Wege, interne Termine gehen ab. Werte mit Frau Dürr plausibilisieren.</div>
+  </div>
+
+  <!-- Lead -->
+  <div class="tool" id="t-lead">
+    <div class="grid g2">
+      <div class="card">
+        <h3>Anfrage bewerten (je Merkmal 0 bis 2 Punkte)</h3>
+        <div id="leadInputs"></div>
+      </div>
+      <div class="card accent">
+        <h3>Ergebnis</h3>
+        <div id="leadOut"></div>
+        <div class="note">Punkte und Quelle in Rentman beim Lead erfassen. So zeigt sich später, welcher Kanal Deckungsbeitrag bringt.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liquidität -->
+  <div class="tool" id="t-liq">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h3>Liquiditätsvorschau 13 Wochen</h3>
+        <div class="row">
+          <label class="f" style="margin:0;width:200px">Kontostand heute (€)<input type="number" id="lStart" step="100"></label>
+          <button class="btn ghost" onclick="liqClear()">Alle Werte löschen</button>
+        </div>
+      </div>
+      <p class="small">Eingänge: offene Forderungen und Abschläge laut Lexware und Rentman. Ausgänge: Löhne, Miete, Zumietung, Steuern. Entnahmen: Privatentnahmen Inhaber.</p>
+      <div style="overflow-x:auto"><table id="liqTable"></table></div>
+      <div id="liqOut"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KENNZAHLEN ================= -->
+<section class="view" id="v-kpi">
+  <h2>Kennzahlen</h2>
+  <p class="lead">Dreizehn Kennzahlen für den Start. Zielwerte und Ampelgrenzen legen Hendric und Joana im Budget 2027 fest.</p>
+  <div class="card"><div style="overflow-x:auto"><table id="kpiTable"></table></div></div>
+
+  <div class="sec">
+    <h3>Grundbegriffe</h3>
+    <div class="grid g3" id="terms"></div>
+  </div>
+</section>
+
+<!-- ================= MONATSABSCHLUSS ================= -->
+<section class="view" id="v-close">
+  <h2>Monatsabschluss</h2>
+  <p class="lead">Ziel: bis zum 10. Werktag. Die Häkchen gelten für den gewählten Monat und werden nur auf diesem Gerät gespeichert.</p>
+  <div class="grid g2">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <label class="f" style="margin:0;width:200px">Monat<input type="month" id="closeMonth" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:7px;font:inherit"></label>
+        <div style="flex:1;min-width:160px"><div class="bar"><i id="closeBar2"></i></div><div class="small" id="closeTxt" style="margin-top:4px"></div></div>
+      </div>
+      <div id="closeList"></div>
+    </div>
+    <div class="card accent">
+      <h3>Controlling-Paket für Hendric (1 Seite)</h3>
+      <ul class="clean">
+        <li>1. Umsatz und Rohertrag, Monat und kumuliert, gegen Budget</li>
+        <li>2. Liquidität heute und in 13 Wochen</li>
+        <li>3. Offene Forderungen über 30 Tage, mit Namen</li>
+        <li>4. Projektmargen: beste und schwächste</li>
+        <li>5. Drei Auffälligkeiten mit Ursache</li>
+        <li>6. Drei Vorschläge mit Betrag und Termin</li>
+      </ul>
+      <div class="note">Ablage: Controlling-Ordner › 05_Berichte_Hendric › JJJJ-MM_Controlling.pdf</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LERNPFAD ================= -->
+<section class="view" id="v-path">
+  <h2>Lernpfad zum Grundplateau</h2>
+  <p class="lead">Vier Etappen von November 2026 bis Ende März 2027. Mentoring alle zwei Wochen, 90 Minuten.</p>
+  <div class="grid g4" id="stages"></div>
+  <div class="sec grid g2">
+    <div class="card accent">
+      <h3>Grundplateau erreicht, wenn Joana …</h3>
+      <div id="crit"></div>
+    </div>
+    <div class="card">
+      <h3>Ablauf jeder Mentoring-Einheit</h3>
+      <ul class="clean">
+        <li><b>15 Min</b> Rückblick: Was ist umgesetzt, wo hakt es?</li>
+        <li><b>30 Min</b> Fall des Tages: ein echtes Projekt durch eine Phase</li>
+        <li><b>30 Min</b> Werkzeug üben: BWA, Nachkalkulation, Vorschau</li>
+        <li><b>15 Min</b> Bis zu drei Aufgaben für die nächsten zwei Wochen</li>
+      </ul>
+      <div class="note">Danach teilt sich der Weg: Pfad A vertieft das Controlling für mu&amp;te. Pfad B startet erst nach Abschluss der Due Diligence.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOKUMENTE ================= -->
+<section class="view" id="v-docs">
+  <h2>Dokumente &amp; Systeme</h2>
+  <p class="lead">Dieses Board speichert keine Unternehmensdaten. Es verweist auf die Orte, an denen sie liegen.</p>
+  <div class="grid g3" id="docCards"></div>
+  <div class="sec grid g2">
+    <div class="card">
+      <h3>Ablage Controlling-Ordner</h3>
+      <div class="folder">Controlling_mute/
+├─ 01_Monatsabschluss/JJJJ-MM/
+├─ 02_Budget/
+├─ 03_Liquiditaet/
+├─ 04_Nachkalkulation/Projektnummer_Kunde/
+├─ 05_Berichte_Hendric/
+├─ 06_Auswertungen_Excel/   (Datum im Dateinamen)
+└─ 07_Vorlagen/</div>
+    </div>
+    <div class="card">
+      <h3>Datenfluss</h3>
+      <ul class="clean">
+        <li><span class="pill">Rentman</span> Anfrage, Kalkulation, Angebot, Auftrag, Planung</li>
+        <li><span class="pill">Crewmeister</span> Arbeitszeiten, Urlaub</li>
+        <li><span class="pill">Lexware</span> Buchung, Bank, offene Posten, Kostenstellen, BWA</li>
+        <li><span class="pill">DATEV</span> Frau Dürr: Abschluss, Steuern</li>
+        <li><span class="pill">Excel</span> Auswertung aus Exporten</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">Arbeitsboard für das Controlling von mu&amp;te Productions · begleitet von neckarfreunde Strategieberatung · Eingaben bleiben auf diesem Gerät.</div></footer>
+
+<script>
+/* ---------- Konfiguration: Links hier pflegen ---------- */
+const DOCS = [
+  {t:"Mentoring-Konzept Controlling", d:"Konzept, Journey, Kennzahlen, Maßnahmen", url:"https://claude.ai/artifact/XjNGqVSGaoukKf5XejghvF", tag:"Konzept"},
+  {t:"Lexware Professional", d:"Buchhaltung, Bank, offene Posten, BWA, Cockpit", url:"", tag:"System"},
+  {t:"Rentman", d:"Anfragen, Angebote, Aufträge, Planung", url:"", tag:"System"},
+  {t:"Crewmeister", d:"Zeiterfassung und Urlaub", url:"", tag:"System"},
+  {t:"Steuerberaterin Frau Dürr", d:"DATEV-Übergabe: Format, Rhythmus, Ansprechpartnerin", url:"", tag:"Kontakt"},
+  {t:"Controlling-Ordner", d:"Ablage aller Auswertungen und Berichte", url:"", tag:"Ablage"},
+];
+
+/* ---------- Helfer ---------- */
+const $ = s => document.querySelector(s);
+const eur = v => (isFinite(v)?v:0).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
+const num = v => { const n = parseFloat(String(v).replace(",", ".")); return isFinite(n)?n:0; };
+const store = {
+  get(k,d){ try{ const v = localStorage.getItem("mute_ctrl_"+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem("mute_ctrl_"+k, JSON.stringify(v)); }catch(e){} }
+};
+function logout(){ try{ sessionStorage.removeItem("mute_ctrl_pw"); }catch(e){} location.reload(); }
+
+/* ---------- Navigation ---------- */
+function route(){
+  const id = (location.hash||"#start").slice(1);
+  const ok = document.getElementById("v-"+id) ? id : "start";
+  document.querySelectorAll("section.view").forEach(s=>s.classList.toggle("on", s.id==="v-"+ok));
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on", a.getAttribute("href")==="#"+ok));
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- Datum & 10. Werktag ---------- */
+function tenthWorkday(y,m){ let d=new Date(y,m,1), c=0; while(true){ const w=d.getDay(); if(w!==0&&w!==6){ c++; if(c===10) return d; } d.setDate(d.getDate()+1);} }
+function workdaysBetween(a,b){ let c=0, d=new Date(a); d.setHours(0,0,0,0); const e=new Date(b); e.setHours(0,0,0,0); while(d<e){ d.setDate(d.getDate()+1); const w=d.getDay(); if(w!==0&&w!==6) c++; } return c; }
+function initDates(){
+  const now = new Date();
+  $("#today").textContent = now.toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  let t = tenthWorkday(now.getFullYear(), now.getMonth());
+  const todayMid = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let label;
+  if(todayMid > t){ t = tenthWorkday(now.getFullYear(), now.getMonth()+1); }
+  const left = workdaysBetween(todayMid, t);
+  const prevMonth = new Date(t.getFullYear(), t.getMonth()-1, 1).toLocaleDateString("de-DE",{month:"long"});
+  $("#wd10").textContent = left===0 ? "heute fällig" : left + (left===1?" Werktag":" Werktage");
+  $("#wd10sub").textContent = "bis zum Abschluss " + prevMonth + " am " + t.toLocaleDateString("de-DE",{day:"numeric",month:"long"}) + " (ohne Feiertage gerechnet)";
+}
+
+/* ---------- Journey ---------- */
+const PHASES = [
+  {n:1,t:"Leadgenerierung",tasks:"Marketingkosten je Kanal auf Kostenstelle Marketing buchen. Leads je Quelle monatlich zählen.",sys:"Lexware, Leadinfo, CRM",kpi:"Marketingkosten je Kanal, Kosten je Lead, Deckungsbeitrag je Lead-Quelle",q:"Welcher Kanal bringt Anfragen, die zu Aufträgen mit Deckungsbeitrag werden?",hand:"Marketing an Vertrieb: Lead ist in Rentman mit Quelle angelegt.",pain:"Leistungsversprechen nicht klar."},
+  {n:2,t:"Anfrage & Qualifizierung",tasks:"Projektnummer vergeben lassen. Pflichtfelder prüfen: Quelle, Budget, Termin. Lead-Punkte erfassen. Absagegründe auswerten.",sys:"Rentman, CRM",kpi:"Anfragen je Monat, Qualifizierungsquote, Reaktionszeit in Stunden",q:"Lehnen wir die richtigen Anfragen ab, und wissen wir warum?",hand:"Entscheidung qualifiziert: bei Nein ist der Grund erfasst. Lead-Bewertung im Werkzeug.",pain:"Antwort dauert zu lange. Absage ohne Begründung."},
+  {n:3,t:"Angebot & Auftrag",tasks:"Kalkulationsschema pflegen. Angebote ab einer Schwelle vor Versand gegenprüfen. Mindestauftragswert prüfen. Abschlagsrechnung nach Auftrag auslösen.",sys:"Rentman, Lexware",kpi:"Angebotsquote, kalkulierte Marge, Tage bis Angebot",q:"Deckt der Preis Crew, Zumietung, Gemeinkosten und Gewinn?",hand:"Vertrieb an Projektleitung: Angebot kalkuliert, Projektnummer gesetzt. Bei Ja Abschlag raus, bei Nein Wiedervorlage.",pain:"Lange Wartezeit aufs Angebot."},
+  {n:4,t:"Planung & Organisation",tasks:"Plan-Kosten je Projekt festhalten. Zumietungen und Freelancer dem Projekt zuordnen. Änderungen als Nachtrag erfassen.",sys:"Rentman, Lexware",kpi:"Plan-Kosten, Zumietquote, Nachträge in Euro",q:"Ist jede Änderung des Kunden bepreist und dokumentiert?",hand:"Projektleitung an Technik: Plan-Kosten und Zumietungen sind dem Projekt zugeordnet.",pain:"Infos gehen bei der Übergabe verloren. Tiefpunkt der Stimmungskurve."},
+  {n:5,t:"Ausführung",tasks:"Mehraufwand-Protokoll vom Eventtag einsammeln. Ist-Stunden aus Crewmeister holen. Schäden und Verluste beim Abbau erfassen.",sys:"Crewmeister, Rentman",kpi:"Ist-Stunden gegen Plan, dokumentierter Mehraufwand",q:"Was ist am Eventtag passiert, das nicht im Angebot stand?",hand:"PM steuert Crew und Technik vor Ort. Mehraufwand wird noch am Eventtag notiert.",pain:"Spontane Änderungen am Eventtag."},
+  {n:6,t:"Abschluss & Rechnung",tasks:"Schlussrechnung binnen 5 Werktagen mit klaren Positionen. Nachkalkulation Soll gegen Ist. Zahlungseingang überwachen, mahnen.",sys:"Rentman, Lexware, DATEV",kpi:"Tage bis Rechnung, Projektmarge Ist, offene Forderungen, Zahlungsdauer",q:"Haben wir verdient, was wir kalkuliert haben?",hand:"Projektleitung an Buchhaltung: Nachträge, Mehraufwand, Ist-Stunden vollständig vor der Schlussrechnung. Entscheidung: Controlling-Ziel erreicht?",pain:"Unklare Positionen auf der Rechnung."},
+  {n:7,t:"Feedback & Follow-up",tasks:"Erkenntnisse der Nachkalkulation ins Kalkulationsschema zurückspielen. Umsatz je Kunde und Wiederbuchung auswerten. Kunden in A, B, C einteilen.",sys:"Lexware, Excel, CRM",kpi:"Wiederbuchungsquote, Umsatz je Kunde, Anteil Top-10-Kunden",q:"Welche Kunden und Eventarten sollten wir stärker suchen?",hand:"Zurück an Vertrieb: Kundenwert und Learnings für das Folgeangebot.",pain:"Feedback wird nicht aktiv eingeholt."}
+];
+function renderPhases(){
+  $("#phases").innerHTML = PHASES.map((p,i)=>`<button data-i="${i}"><b>${p.n}</b>${p.t}</button>`).join("");
+  $("#phases").onclick = e => { const b=e.target.closest("button"); if(b) showPhase(+b.dataset.i); };
+  showPhase(store.get("phase",0));
+}
+function showPhase(i){
+  const p = PHASES[i]; store.set("phase",i);
+  document.querySelectorAll("#phases button").forEach((b,j)=>b.classList.toggle("on",j===i));
+  $("#phaseCard").innerHTML = `<div class="label">Phase ${p.n}</div><h3>${p.t}</h3>
+   <dl class="kv"><dt>Joanas Aufgaben</dt><dd>${p.tasks}</dd><dt>System</dt><dd>${p.sys}</dd><dt>Kennzahl</dt><dd>${p.kpi}</dd></dl>
+   <div class="q" style="margin-top:14px">${p.q}</div>`;
+  $("#phaseHand").textContent = p.hand;
+  $("#phasePain").textContent = p.pain;
+}
+
+/* ---------- Auftragsrechner ---------- */
+const ROLES = ["Hendric","Projektleitung","Lager","Buchhaltung"];
+const RATE_DEFAULT = {Hendric:100,Projektleitung:60,Lager:45,Buchhaltung:50};
+const PRESETS = {
+  cd:{rev:40,vari:2,rows:[["Anfrage beantworten, Rückfragen","Hendric",15],["Angebot und Auftrag in Rentman","Hendric",10],["Gerät prüfen, packen, ausgeben","Lager",20],["Rücknahme, Test, einräumen","Lager",15],["Rechnung stellen, Zahlung prüfen","Buchhaltung",10]]},
+  shop:{rev:40,vari:2,rows:[["Ausgabe und Rücknahme","Lager",25],["Zahlung prüfen","Buchhaltung",5]]},
+  empty:{rev:0,vari:0,rows:[["","Projektleitung",0]]}
+};
+let order = store.get("order", null);
+let rates = store.get("rates", RATE_DEFAULT);
+function orderPreset(k){ const p=PRESETS[k]; order={rev:p.rev,vari:p.vari,rows:p.rows.map(r=>r.slice())}; renderOrder(); }
+function addOrderRow(){ order.rows.push(["","Projektleitung",0]); renderOrder(); }
+function delOrderRow(i){ order.rows.splice(i,1); renderOrder(); }
+function renderOrder(){
+  if(!order) { const p=PRESETS.cd; order={rev:p.rev,vari:p.vari,rows:p.rows.map(r=>r.slice())}; }
+  $("#orderRows").innerHTML = order.rows.map((r,i)=>`<tr>
+    <td><input type="text" value="${(r[0]||"").replace(/"/g,"&quot;")}" data-i="${i}" data-c="0"></td>
+    <td><select data-i="${i}" data-c="1">${ROLES.map(x=>`<option${x===r[1]?" selected":""}>${x}</option>`).join("")}</select></td>
+    <td style="width:80px"><input type="number" value="${r[2]}" data-i="${i}" data-c="2"></td>
+    <td style="width:30px"><button class="btn ghost" style="padding:4px 8px" onclick="delOrderRow(${i})">×</button></td></tr>`).join("");
+  $("#oRev").value = order.rev; $("#oVar").value = order.vari;
+  calcOrder();
+}
+function renderRates(){
+  $("#rateInputs").innerHTML = ROLES.map(r=>`<label class="f">${r}<input type="number" data-rate="${r}" value="${rates[r]}"></label>`).join("");
+}
+function orderProc(){
+  return order.rows.reduce((s,r)=>s + num(r[2])/60*num(rates[r[1]]),0);
+}
+function calcOrder(){
+  const mins = order.rows.reduce((s,r)=>s+num(r[2]),0);
+  const ownMins = order.rows.filter(r=>r[1]==="Hendric").reduce((s,r)=>s+num(r[2]),0);
+  const proc = orderProc(), total = proc + num(order.vari), res = num(order.rev) - total;
+  const cls = res>=0 ? "ok":"bad";
+  $("#orderOut").innerHTML = `<table style="margin-top:6px">
+    <tr><td>Interne Zeit</td><td class="num">${mins} Min. (davon Hendric ${ownMins} Min.)</td></tr>
+    <tr><td>Prozesskosten intern</td><td class="num">${eur(proc)}</td></tr>
+    <tr><td>Variable Kosten</td><td class="num">${eur(num(order.vari))}</td></tr>
+    <tr><td><b>Kosten gesamt</b></td><td class="num"><b>${eur(total)}</b></td></tr>
+    <tr><td>Umsatz netto</td><td class="num">${eur(num(order.rev))}</td></tr></table>
+    <div class="result ${cls}"><div class="label" style="color:inherit">Ergebnis je Auftrag</div><div class="big">${res>=0?"+":""}${eur(res)}</div>
+    ${res<0?"Der Auftrag kostet mehr, als er einbringt. Ablauf ändern, Preis anheben oder bündeln.":"Der Auftrag deckt seine Kosten."} Fixkosten und Gewinn sind hier noch nicht enthalten: siehe Mindestauftragswert.</div>`;
+  store.set("order",order); store.set("rates",rates);
+}
+
+/* ---------- Mindestauftragswert ---------- */
+const MAW_DEF = {proc:76.25,vari:2,fix:0,cnt:0,profit:20};
+let maw = store.get("maw", MAW_DEF);
+function takeProc(){ maw.proc = Math.round(orderProc()*100)/100; maw.vari = num(order.vari); fillMaw(); calcMaw(); }
+function fillMaw(){ $("#mProc").value=maw.proc; $("#mVar").value=maw.vari; $("#mFix").value=maw.fix||""; $("#mCnt").value=maw.cnt||""; $("#mProfit").value=maw.profit; }
+function calcMaw(){
+  const fixShare = num(maw.cnt)>0 ? num(maw.fix)/num(maw.cnt) : 0;
+  const base = num(maw.proc)+num(maw.vari)+fixShare;
+  const v = base*(1+num(maw.profit)/100);
+  const miss = !(num(maw.fix)>0 && num(maw.cnt)>0);
+  $("#mawOut").innerHTML = `<table>
+   <tr><td>Prozesskosten</td><td class="num">${eur(num(maw.proc))}</td></tr>
+   <tr><td>Variable Kosten</td><td class="num">${eur(num(maw.vari))}</td></tr>
+   <tr><td>Fixkostenanteil je Auftrag</td><td class="num">${miss?"fehlt":eur(fixShare)}</td></tr>
+   <tr><td>Gewinnaufschlag</td><td class="num">${num(maw.profit)} %</td></tr></table>
+   <div class="result ${miss?"warn":"ok"}"><div class="label" style="color:inherit">Mindestauftragswert netto</div><div class="big">${eur(v)}</div>
+   ${miss?"Ohne Fixkosten und Auftragszahl ist der Wert zu niedrig. Beides aus Lexware und Rentman eintragen.":"Darunter verdient mu&amp;te mit einem Auftrag im heutigen Ablauf kein Geld."}</div>`;
+  store.set("maw",maw);
+}
+
+/* ---------- Stundensatz ---------- */
+const RATE_CALC_DEF = {own:"",ownH:"",emp:"",lnk:21,gk:"",empH:""};
+let rc = store.get("ratecalc", RATE_CALC_DEF);
+function fillRate(){ $("#rOwn").value=rc.own; $("#rOwnH").value=rc.ownH; $("#rEmp").value=rc.emp; $("#rEmpLnk").value=rc.lnk; $("#rEmpGk").value=rc.gk; $("#rEmpH").value=rc.empH; }
+function calcRate(){
+  const o = num(rc.ownH)>0 ? num(rc.own)/num(rc.ownH) : 0;
+  $("#rOwnOut").innerHTML = o ? `<div class="result ok"><div class="label" style="color:inherit">Stundensatz Inhaber</div><div class="big">${eur(o)}</div><a href="#" onclick="setRate('Hendric',${o.toFixed(2)});return false">im Auftragsrechner verwenden</a></div>` : "";
+  const e = num(rc.empH)>0 ? num(rc.emp)*(1+num(rc.lnk)/100)*(1+num(rc.gk)/100)/num(rc.empH) : 0;
+  $("#rEmpOut").innerHTML = e ? `<div class="result ok"><div class="label" style="color:inherit">Stundensatz intern</div><div class="big">${eur(e)}</div>
+     <div class="row">${ROLES.slice(1).map(r=>`<a href="#" onclick="setRate('${r}',${e.toFixed(2)});return false">für ${r}</a>`).join(" · ")}</div></div>` : "";
+  store.set("ratecalc",rc);
+}
+function setRate(r,v){ rates[r]=v; renderRates(); calcOrder(); alertMini(`Satz ${r}: ${eur(v)} übernommen`); }
+function alertMini(t){ const d=document.createElement("div"); d.textContent=t; d.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0E1F33;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;z-index:9"; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }
+
+/* ---------- Lead-Bewertung ---------- */
+const LEAD = [
+  ["Auftragswert",["unter Mindestauftragswert","um den Mindestwert","deutlich darüber"]],
+  ["Leistung",["reine Kleinvermietung","Technik mit etwas Service","Konzeption, Technik und Crew"]],
+  ["Kundentyp",["einmalig privat","Unternehmen, einmalig","Unternehmen, Agentur, Veranstalter mit Wiederholung"]],
+  ["Planungsvorlauf",["unter 1 Woche","1 bis 4 Wochen","über 4 Wochen"]],
+  ["Folgegeschäft",["keins erkennbar","möglich","konkret absehbar"]]
+];
+let lead = store.get("lead",[1,1,1,1,1]);
+function renderLead(){
+  $("#leadInputs").innerHTML = LEAD.map((l,i)=>`<label class="f">${l[0]}<select data-lead="${i}">${l[1].map((o,j)=>`<option value="${j}"${lead[i]===j?" selected":""}>${j} · ${o}</option>`).join("")}</select></label>`).join("");
+  calcLead();
+}
+function calcLead(){
+  const s = lead.reduce((a,b)=>a+b,0);
+  let cls,t,d;
+  if(s>=8){cls="ok";t="Sofort bearbeiten";d="Hendric oder Projektleitung übernimmt. Angebot zügig, individuell.";}
+  else if(s>=4){cls="warn";t="Standardangebot";d="Angebot aus Vorlage, ohne Geschäftsführung. Mindestauftragswert prüfen.";}
+  else {cls="bad";t="Webshop oder Absage";d="Auf Webshop mit festen Preisen verweisen oder freundlich absagen. Grund in Rentman erfassen.";}
+  $("#leadOut").innerHTML = `<div class="result ${cls}"><div class="label" style="color:inherit">${s} von 10 Punkten</div><div class="big">${t}</div>${d}</div>`;
+  store.set("lead",lead);
+}
+
+/* ---------- Liquidität ---------- */
+let liq = store.get("liq",{start:"",w:Array.from({length:13},()=>({in:"",out:"",dr:""}))});
+function mondayOf(d){ const x=new Date(d); const w=(x.getDay()+6)%7; x.setDate(x.getDate()-w); x.setHours(0,0,0,0); return x; }
+function renderLiq(){
+  $("#lStart").value = liq.start;
+  const m0 = mondayOf(new Date());
+  let h = `<thead><tr><th>Woche ab</th><th class="num">Eingänge €</th><th class="num">Ausgänge €</th><th class="num">Entnahmen €</th><th class="num">Saldo Ende €</th></tr></thead><tbody>`;
+  liq.w.forEach((w,i)=>{ const d=new Date(m0); d.setDate(d.getDate()+7*i);
+    h += `<tr><td>KW ${kw(d)} · ${d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</td>
+    <td><input type="number" data-liq="${i}" data-k="in" value="${w.in}"></td>
+    <td><input type="number" data-liq="${i}" data-k="out" value="${w.out}"></td>
+    <td><input type="number" data-liq="${i}" data-k="dr" value="${w.dr}"></td>
+    <td class="num" id="ls${i}"></td></tr>`; });
+  $("#liqTable").innerHTML = h + "</tbody>";
+  calcLiq();
+}
+function kw(d){ const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); const day=t.getUTCDay()||7; t.setUTCDate(t.getUTCDate()+4-day); const y=new Date(Date.UTC(t.getUTCFullYear(),0,1)); return Math.ceil(((t-y)/86400000+1)/7); }
+function calcLiq(){
+  let s = num(liq.start), min = s, minI = -1;
+  liq.w.forEach((w,i)=>{ s += num(w.in)-num(w.out)-num(w.dr); const c=$("#ls"+i); c.textContent = s.toLocaleString("de-DE",{maximumFractionDigits:0}); c.className = "num"+(s<0?" neg":""); if(s<min){min=s;minI=i;} });
+  const has = liq.start!=="" || liq.w.some(w=>w.in||w.out||w.dr);
+  $("#liqOut").innerHTML = !has ? "" : (min<0
+    ? `<div class="result bad">Der Saldo wird negativ: tiefster Stand ${eur(min)} in Woche ${minI+1}. Jetzt handeln: Forderungen eintreiben, Abschläge anfordern, Zahlungen verschieben, Entnahmen anpassen.</div>`
+    : `<div class="result ok">Tiefster Stand in 13 Wochen: ${eur(min)}${minI>=0?` (Woche ${minI+1})`:""}.</div>`);
+  store.set("liq",liq);
+}
+function liqClear(){ if(!confirmClear()) return; liq={start:"",w:Array.from({length:13},()=>({in:"",out:"",dr:""}))}; renderLiq(); }
+function confirmClear(){ return window.confirm ? window.confirm("Alle Werte der Liquiditätsvorschau auf diesem Gerät löschen?") : true; }
+
+/* ---------- Kennzahlen ---------- */
+const KPI = [
+  ["Umsatz gegen Budget","Ist-Umsatz Monat und kumuliert ÷ Budget","Lexware","monatlich"],
+  ["Rohertrag","Umsatz − Zumietung, Freelancer, Fremdleistungen","Lexware","monatlich"],
+  ["Zumietquote","Zumietkosten ÷ Umsatz","Lexware, Rentman","monatlich"],
+  ["Personalkostenquote","Personalkosten inkl. Freelancer ÷ Umsatz","Lexware, Crewmeister","monatlich"],
+  ["Projektmarge","(Projektumsatz − Projektkosten) ÷ Projektumsatz, Soll gegen Ist","Rentman, Lexware, Excel","je Projekt"],
+  ["Liquidität 13 Wochen","Kontostand + Eingänge − Ausgänge − Entnahmen","Lexware, Excel","wöchentlich"],
+  ["Offene Forderungen","Summe und Alter unbezahlter Rechnungen","Lexware","wöchentlich"],
+  ["Auftragsbestand","Beauftragter Umsatz der nächsten 3 Monate","Rentman","monatlich"],
+  ["Angebotsquote","Aufträge ÷ versendete Angebote","Rentman","monatlich"],
+  ["Break-even je Monat","Fixkosten ÷ Rohertragsquote","Lexware, Excel","quartalsweise"],
+  ["Prozesskosten je Auftrag","interne Minuten je Rolle × Stundensatz","Zeitmessung, Crewmeister","quartalsweise"],
+  ["Anteil Aufträge unter Mindestwert","Aufträge unter Mindestauftragswert ÷ alle Aufträge","Rentman","monatlich"],
+  ["Deckungsbeitrag je Lead-Quelle","Summe Deckungsbeitrag der Aufträge je Quelle","Rentman, Lexware","quartalsweise"]
+];
+const TERMS = [
+  ["Umsatz","Was der Kunde netto zahlt.","40 € Miete für einen CD-Player"],
+  ["Variable Kosten","Fallen nur an, wenn der Auftrag stattfindet.","Zumietung, Freelancer, Transport"],
+  ["Deckungsbeitrag","Umsatz minus variable Kosten. Davon werden die Fixkosten bezahlt.","40 € − 2 € = 38 €"],
+  ["Fixkosten","Laufen jeden Monat, ob Auftrag oder nicht.","Hallenmiete, feste Gehälter, Software"],
+  ["Prozesskosten","Interne Zeit, die jeder Auftrag braucht. Bei kleinen und großen Aufträgen fast gleich.","Anfrage, Angebot, Lager, Rechnung"],
+  ["Kalk. Unternehmerlohn","Was die Arbeitsstunde des Inhabers wert ist. Steht in der Einzelfirma nicht in der BWA.","Rechner „Stundensatz“"]
+];
+function renderKpi(){
+  $("#kpiTable").innerHTML = `<thead><tr><th>Kennzahl</th><th>Berechnung</th><th>Quelle</th><th>Takt</th></tr></thead><tbody>`+
+    KPI.map(k=>`<tr><td><b>${k[0]}</b></td><td>${k[1]}</td><td>${k[2]}</td><td>${k[3]}</td></tr>`).join("")+"</tbody>";
+  $("#terms").innerHTML = TERMS.map(t=>`<div class="card"><h3>${t[0]}</h3><p>${t[1]}</p><div class="small">${t[2]}</div></div>`).join("");
+}
+
+/* ---------- Monatsabschluss ---------- */
+const CLOSE = [
+  "Alle Belege des Monats in Lexware erfasst",
+  "Bankkonten Volksbank und Sparkasse abgeglichen",
+  "Ausgangsrechnungen vollständig, abgeglichen mit Aufträgen in Rentman",
+  "Eingangsrechnungen vollständig, Zumietungen den Projekten zugeordnet",
+  "Offene Posten geprüft, Mahnungen versendet",
+  "Kostenstellen und Projektnummern geprüft",
+  "Ist-Stunden aus Crewmeister übernommen",
+  "Export an Frau Dürr (DATEV) übergeben",
+  "BWA geprüft, 3 größte Veränderungen zum Vormonat notiert",
+  "Soll-Ist-Vergleich gegen Budget",
+  "Nachkalkulation der abgeschlossenen Projekte",
+  "Liquiditätsvorschau aktualisiert",
+  "Controlling-Paket an Hendric versendet"
+];
+function curMonth(){ const d=new Date(); d.setMonth(d.getMonth()-1); return d.toISOString().slice(0,7); }
+function renderClose(){
+  const m = $("#closeMonth").value || curMonth(); $("#closeMonth").value = m;
+  const st = store.get("close_"+m, []);
+  $("#closeList").innerHTML = CLOSE.map((c,i)=>`<label class="check${st.includes(i)?" done":""}"><input type="checkbox" data-close="${i}"${st.includes(i)?" checked":""}><span>${c}</span></label>`).join("");
+  updClose();
+}
+function updClose(){
+  const m = $("#closeMonth").value; const st = store.get("close_"+m, []);
+  const p = Math.round(st.length/CLOSE.length*100);
+  $("#closeBar2").style.width = p+"%"; $("#closeTxt").textContent = `${st.length} von ${CLOSE.length} erledigt`;
+  const cm = curMonth(); const s2 = store.get("close_"+cm, []); const p2=Math.round(s2.length/CLOSE.length*100);
+  $("#closePct").textContent = p2+" %"; $("#closeLbl").textContent = "Checkliste Abschluss " + new Date(cm+"-01").toLocaleDateString("de-DE",{month:"long"}); $("#closeBar").style.width = p2+"%";
+}
+
+/* ---------- Lernpfad ---------- */
+const STAGES = [
+  ["1 Verstehen","Nov 2026","Rolle des Controllings, Datenfluss, Grundbegriffe, BWA lesen, Kontenrahmen und Kostenstellen","Datenflusskarte, Inventar der Excel-Listen"],
+  ["2 Ordnen","Dez 2026","Schnittstelle Lexware an DATEV, Projektnummer-Logik, Kostenstellen mit Frau Dürr, Budget, Mindestauftragswert","Schnittstelle läuft, Budget 2027 steht"],
+  ["3 Messen","Jan bis Feb 2027","Monatsabschluss nach Standard, Liquiditätsvorschau, Nachkalkulation","2 Monatsabschlüsse, 3 Projekte nachkalkuliert"],
+  ["4 Steuern","März 2027","Abweichungen erklären, Vorschläge mit Betrag, Kalkulationsschema anpassen","Erstes eigenes Soll-Ist-Gespräch mit Hendric"]
+];
+const CRIT = [
+  "den Datenfluss aller vier Systeme ohne Unterlagen erklären kann",
+  "eine BWA liest und die drei größten Veränderungen zum Vormonat begründet",
+  "den Monatsabschluss bis zum 10. Werktag ohne Hilfe abschließt",
+  "eine Liquiditätsvorschau für 13 Wochen führt",
+  "ein Projekt von der Anfrage bis zur Zahlung nachrechnen kann",
+  "Hendric drei Maßnahmen mit Betrag und Termin vorschlägt"
+];
+function renderPath(){
+  $("#stages").innerHTML = STAGES.map(s=>`<div class="card accent"><div class="label">${s[1]}</div><h3>${s[0]}</h3><p class="small">${s[2]}</p><div><span class="pill">${s[3]}</span></div></div>`).join("");
+  const st = store.get("crit",[]);
+  $("#crit").innerHTML = CRIT.map((c,i)=>`<label class="check${st.includes(i)?" done":""}"><input type="checkbox" data-crit="${i}"${st.includes(i)?" checked":""}><span>${c}</span></label>`).join("");
+  $("#pathPct").textContent = `${st.length} von ${CRIT.length}`;
+}
+
+/* ---------- Dokumente ---------- */
+function renderDocs(){
+  $("#docCards").innerHTML = DOCS.map(d=>`<div class="card"><span class="pill">${d.tag}</span><h3 style="margin-top:6px">${d.t}</h3><p class="small">${d.d}</p>
+   ${d.url?`<a href="${d.url}" target="_blank" rel="noopener">öffnen ↗</a>`:`<span class="small">Link folgt</span>`}</div>`).join("");
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("input", e=>{
+  const t=e.target;
+  if(t.dataset.c!==undefined){ order.rows[+t.dataset.i][+t.dataset.c] = t.dataset.c==="2"?num(t.value):t.value; calcOrder(); }
+  else if(t.dataset.rate){ rates[t.dataset.rate]=num(t.value); calcOrder(); }
+  else if(t.id==="oRev"){ order.rev=num(t.value); calcOrder(); }
+  else if(t.id==="oVar"){ order.vari=num(t.value); calcOrder(); }
+  else if(["mProc","mVar","mFix","mCnt","mProfit"].includes(t.id)){ const k={mProc:"proc",mVar:"vari",mFix:"fix",mCnt:"cnt",mProfit:"profit"}[t.id]; maw[k]=t.value; calcMaw(); }
+  else if(["rOwn","rOwnH","rEmp","rEmpLnk","rEmpGk","rEmpH"].includes(t.id)){ const k={rOwn:"own",rOwnH:"ownH",rEmp:"emp",rEmpLnk:"lnk",rEmpGk:"gk",rEmpH:"empH"}[t.id]; rc[k]=t.value; calcRate(); }
+  else if(t.dataset.lead!==undefined){ lead[+t.dataset.lead]=+t.value; calcLead(); }
+  else if(t.dataset.liq!==undefined){ liq.w[+t.dataset.liq][t.dataset.k]=t.value; calcLiq(); }
+  else if(t.id==="lStart"){ liq.start=t.value; calcLiq(); }
+});
+document.addEventListener("change", e=>{
+  const t=e.target;
+  if(t.dataset.close!==undefined){ const m=$("#closeMonth").value; let st=store.get("close_"+m,[]); const i=+t.dataset.close; st = t.checked?[...new Set([...st,i])]:st.filter(x=>x!==i); store.set("close_"+m,st); t.closest(".check").classList.toggle("done",t.checked); updClose(); }
+  else if(t.dataset.crit!==undefined){ let st=store.get("crit",[]); const i=+t.dataset.crit; st = t.checked?[...new Set([...st,i])]:st.filter(x=>x!==i); store.set("crit",st); renderPath(); }
+  else if(t.id==="closeMonth"){ renderClose(); }
+});
+$("#toolsNav").onclick = e=>{ const b=e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#toolsNav button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".tool").forEach(x=>x.classList.toggle("on",x.id==="t-"+b.dataset.t)); };
+
+/* ---------- Start ---------- */
+initDates(); renderPhases(); renderRates(); renderOrder(); fillMaw(); calcMaw(); fillRate(); calcRate();
+renderLead(); renderLiq(); renderKpi(); renderClose(); renderPath(); renderDocs(); route();
+</script>
+</body>
+</html>
